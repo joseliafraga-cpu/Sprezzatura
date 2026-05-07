@@ -570,7 +570,7 @@ img { max-width: 100%; height: auto; }
       <div class="auth-error" id="auth-error-t"></div>
       <input class="auth-input" id="t-email" type="email" placeholder="E-mail do mentor" style="font-size:12px;padding:10px 12px"/>
       <input class="auth-input" id="t-pass" type="password" placeholder="Senha" style="font-size:12px;padding:10px 12px"/>
-      <button class="auth-btn" id="t-btn" onclick="authMentor()" style="background:rgba(255,255,255,.1);color:var(--beige);font-size:10px">Entrar como Mentor</button>
+      <button class="auth-btn" id="t-btn" onclick="authMentor()" style="background:rgba(255,255,255,.1);color:var(--beige);font-size:10px">Entrar como Mentor</button><div style="text-align:center;margin-top:8px"><a onclick="authMentorOTP()" style="font-size:10px;color:rgba(184,160,64,.7);cursor:pointer;text-decoration:underline">Esqueci a senha — entrar por e-mail</a></div>
     </div>
     <div style="margin-top:24px;font-size:10px;color:rgba(200,186,160,.4);text-align:center;letter-spacing:.1em">
       DENISE MILK  ·  ARLEY BARRETO
@@ -2015,6 +2015,35 @@ function clearFields(ids) {
 // ══════════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════════
+
+async function authMentorOTP() {
+  var email = (document.getElementById('t-email')||{}).value.trim();
+  var errEl = document.getElementById('auth-error-t');
+  if(!email) {
+    if(errEl){ errEl.textContent='Digite seu e-mail primeiro.'; errEl.className += ' show'; }
+    return;
+  }
+  // Check if it's a valid mentor email
+  var mentorEmails = ['arley@sprezzatura.com.br', 'denise@sprezzatura.com.br'];
+  if(!mentorEmails.includes(email.toLowerCase())) {
+    if(errEl){ errEl.textContent='E-mail não reconhecido como mentor.'; errEl.className += ' show'; }
+    return;
+  }
+  try {
+    var r = await sb.auth.signInWithOtp({ email: email, options: { shouldCreateUser: false } });
+    if(r.error) throw r.error;
+    if(errEl){ 
+      errEl.style.background='rgba(58,120,72,.3)';
+      errEl.style.borderColor='rgba(58,120,72,.5)';
+      errEl.style.color='#8AE6A2';
+      errEl.textContent='✓ Link enviado para ' + email + '. Verifique seu e-mail e clique no link para entrar.'; 
+      errEl.className += ' show'; 
+    }
+  } catch(e) {
+    if(errEl){ errEl.textContent='Erro: ' + e.message; errEl.className += ' show'; }
+  }
+}
+
 async function init() {
   // Credentials hardcoded — always go straight to auth
   // Handle file:// protocol limitation
