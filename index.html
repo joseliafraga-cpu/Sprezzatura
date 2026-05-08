@@ -792,6 +792,17 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
 window.supabase=supabase;</script>
 <script>
 const U='https://spwjdopegvbsrqgcytlq.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwd2pkb3BlZ3Zic3JxZ2N5dGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTczNzUsImV4cCI6MjA5MzQ5MzM3NX0.xRHBeDWdbiSAGhbyiBR30HvqOFQmEcu-WZKV5aQlK9I';
+// Initialize sb SYNCHRONOUSLY - supabase bundle is already loaded inline
+let sb = (function() {
+  try {
+    const client = supabase.createClient(U, K);
+    console.log('✓ sb initialized synchronously');
+    return client;
+  } catch(e) {
+    console.error('sb sync init failed:', e);
+    return null;
+  }
+})();
 const P={essencia:{l:'Essência',c:'#3A3A26',bg:'#EAECE2'},trajetoria:{l:'Trajetória',c:'#7A3C26',bg:'#F2EBE6'},legado:{l:'Legado',c:'#1A2838',bg:'#E6EBF2'}};
 const ST={so:{l:'Crescimento',s:'F+O',c:'#3A3A26'},st:{l:'Defesa',s:'F+A',c:'#7A3C26'},wo:{l:'Desenvolv.',s:'W+O',c:'#22364A'},wt:{l:'Sobreviv.',s:'W+A',c:'#9E5733'},livre:{l:'Livre',s:'—',c:'#887E6E'}};
 const PW={high:3,medium:2,low:1},PC={high:'#882020',medium:'#B69040',low:'#887E6E'},PL={high:'Alta',medium:'Média',low:'Baixa'};
@@ -1167,8 +1178,8 @@ function showApp(){enterApp()}
 // INIT - Load Supabase CDN then start
 window.addEventListener('load', async function(){
   try{
-    sb=supabase.createClient(U,K);
-    console.log('✓ Supabase OK');
+    if(!sb)sb=supabase.createClient(U,K);
+    console.log('✓ Supabase OK (load event)');
     const{data:{session}}=await sb.auth.getSession();
     if(session?.user){USER=session.user;await loadProf();enterApp()}
     sb.auth.onAuthStateChange(async(evt,sess)=>{
