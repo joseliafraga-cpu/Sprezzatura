@@ -851,13 +851,16 @@ async function authMentee(){
 }
 
 async function authMentor(){
+  // GUARANTEED FEEDBACK - always show something
+  var errEl=document.getElementById('auth-error-t');
+  if(errEl){errEl.style.cssText='display:block;background:rgba(100,80,0,.3);color:#FFD700;border:1px solid rgba(200,160,0,.5);border-radius:7px;padding:8px 11px;font-size:11px;margin-bottom:8px';errEl.textContent='Verificando...';}
   var email=(document.getElementById('t-email')||{}).value||'';
   var pass=(document.getElementById('t-pass')||{}).value||'';
   email=email.trim();
-  hideE('auth-error-t');
-  if(!email||!pass){showE('auth-error-t','Preencha e-mail e senha.');return;}
+  if(!email||!pass){if(errEl){errEl.style.background='rgba(136,32,32,.35)';errEl.style.color='#ffaaaa';errEl.style.borderColor='rgba(136,32,32,.5)';errEl.textContent='Preencha e-mail e senha.';}return;}
   var btn=document.getElementById('t-btn');
   if(btn){btn.disabled=true;btn.textContent='...';}
+  if(errEl)errEl.textContent='Conectando ao servidor...';
   try{
     var d=await api('POST','/auth/v1/token?grant_type=password',{email:email,password:pass});
     TK=d.access_token;UID=d.user.id;
