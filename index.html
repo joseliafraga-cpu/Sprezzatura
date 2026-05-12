@@ -176,7 +176,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#1A2838;min-height
     <div class="sep"></div>
     <div class="page-title" id="home-title">Dashboard</div>
     <button class="btn-top" id="btn-add-m" onclick="openSh('sh-mentee')" style="display:none">+ Mentorado</button>
-    <button class="btn-sair" onclick="sair()">Sair</button>
+    <button class="btn-top" onclick="openSh('sh-manual')" style="margin-right:4px">?</button><button class="btn-sair" onclick="sair()">Sair</button>
   </div>
   <div class="body" id="home-body"></div>
 </div>
@@ -448,12 +448,6 @@ function renderHome(){
   }
   h+='</div>';
 
-  h+='<div class="section">Ajuda</div><div style="margin:0 14px 20px"><div style="background:#F5F2EC;border-radius:10px;padding:16px">';
-  h+='<div style="font-family:Georgia,serif;font-size:1.1rem;color:#1A2838;margin-bottom:12px"><span style="color:#B69040;font-style:italic">S</span>PREZZATURA · Manual</div>';
-  h+='<div style="display:flex;flex-direction:column;gap:8px">';
-  var manual=[["Mentores — Login","barretoarley@gmail.com / Sprezz2025\ndenisemilkvargas@gmail.com / Sprezz2025","#1A2838"],["Mentorados — Criar conta","Bloco Sou Mentorado → Criar conta → nome, e-mail e senha","#7A3C26"],["Cadastrar Mentorado","Tela inicial → + Mentorado → preencher","#22364A"],["Criar Ações","Perfil do mentorado → aba Plano → + Nova Ação","#3A3A26"],["Concluir Meta","Tocar no círculo à esquerda → fica verde ✓","#1A2838"],["Registrar Sessão","Perfil → aba Sessões → + Registrar Sessão","#7A3C26"],["Instalar no iPhone","Safari → compartilhar ↑ → Adicionar à Tela de Início","#9E5733"]];
-  manual.forEach(function(x){h+='<div style="border-radius:8px;overflow:hidden"><div style="background:'+x[2]+';padding:8px 10px;font-size:11px;font-weight:600;color:white">'+x[0]+'</div><div style="background:white;padding:8px 10px;font-size:11px;color:#484438;line-height:1.5;white-space:pre-line">'+x[1]+'</div></div>';});
-  h+='</div></div></div>';
   b.innerHTML=h;
 }
 
@@ -638,5 +632,40 @@ async function saveCI(){
   }catch(e){toast('Erro: '+e.message);}
 }
 </script>
+
+<div class="sheet" id="sh-manual">
+  <div class="sheet-handle"></div>
+  <div class="sheet-title">Manual de Uso</div>
+  <div class="sheet-body" style="gap:8px">
+    <div style="font-size:11px;color:#887E6E;margin-bottom:4px">Guia completo · Sprezzatura Mentoria</div>
+    <div id="manual-items"></div>
+    <button class="btn-secondary" onclick="closeSh()">Fechar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var items=[
+    ["Mentores — Login","barretoarley@gmail.com\nSenha: Sprezz2025\n\ndenisemilkvargas@gmail.com\nSenha: Sprezz2025","#1A2838"],
+    ["Mentorados — Criar conta","Bloco Sou Mentorado → tocar em Criar conta → preencher nome, e-mail e senha","#7A3C26"],
+    ["Cadastrar Mentorado (Mentor)","Tela inicial → botão + Mentorado → preencher dados → Cadastrar","#22364A"],
+    ["Criar Ação (Mentor)","Perfil do mentorado → aba Plano → + Nova Ação → preencher e Adicionar","#3A3A26"],
+    ["Concluir Meta","Tocar no círculo à esquerda da ação → fica verde com ✓","#B69040"],
+    ["Registrar Sessão (Mentor)","Perfil do mentorado → aba Sessões → + Registrar Sessão → preencher e Registrar","#7A3C26"],
+    ["Instalar no iPhone","Abrir no Safari → ícone compartilhar ↑ → Adicionar à Tela de Início","#9E5733"],
+    ["Link do App","https://sprezzatura--joseliafraga.replit.app","#1A2838"]
+  ];
+  var h='';
+  items.forEach(function(x){
+    h+='<div style="border-radius:8px;overflow:hidden;margin-bottom:6px">'
+      +'<div style="background:'+x[2]+';padding:9px 11px;font-size:11px;font-weight:600;color:white">'+x[0]+'</div>'
+      +'<div style="background:#F5F2EC;padding:9px 11px;font-size:11px;color:#484438;line-height:1.6;white-space:pre-line">'+x[1]+'</div>'
+      +'</div>';
+  });
+  var el=document.getElementById('manual-items');
+  if(el)el.innerHTML=h;
+})();
+</script>
+
 </body>
 </html>
