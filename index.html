@@ -240,6 +240,17 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#1A2838;min-height
 </div>
 
 <script>
+// Self-test: verify JS is running
+window.addEventListener('load', function() {
+  var btn = document.getElementById('mt-btn');
+  if (btn) {
+    btn.style.border = '2px solid #B69040';
+    console.log('JS loaded OK, mt-btn found');
+  } else {
+    console.log('ERROR: mt-btn not found');
+  }
+});
+
 var U='https://spwjdopegvbsrqgcytlq.supabase.co';
 var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwd2pkb3BlZ3Zic3JxZ2N5dGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTczNzUsImV4cCI6MjA5MzQ5MzM3NX0.xRHBeDWdbiSAGhbyiBR30HvqOFQmEcu-WZKV5aQlK9I';
 var PC={essencia:{l:'Essência',c:'#3A3A26',bg:'#EAECE2'},trajetoria:{l:'Trajetória',c:'#7A3C26',bg:'#F2EBE6'},legado:{l:'Legado',c:'#1A2838',bg:'#E6EBF2'}};
@@ -327,6 +338,7 @@ async function doMentee(){
   if(!email||!pass){showE('me-err','Preencha e-mail e senha.');return;}
   var btn=document.getElementById('me-btn');
   btn.disabled=true;btn.textContent='...';
+  showE('mt-err','Conectando...'); 
   try{
     if(REG){
       var name=(document.getElementById('me-name').value||'').trim();
