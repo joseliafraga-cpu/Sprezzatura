@@ -554,11 +554,30 @@ function rSwot(m,b,isM){
     h+='<div class="swot-q"><div class="swot-head" style="background:'+q.c+'"><div class="swot-name" style="color:white">'+q.t+'</div><div style="font-size:8px;color:rgba(255,255,255,.7);margin-top:1px">'+q.e+'</div></div>';
     h+='<div class="swot-body" style="background:'+q.bg+'">';
     qi.forEach(function(i){h+='<div class="swot-item"><div class="swot-dot" style="background:'+q.c+'"></div><span>'+i.content+'</span></div>';});
-    if(!qi.length)h+='<div style="font-size:10px;color:#C6B89E;font-style:italic">Nenhum item.</div>';
+    if(!qi.length)h+='<div style="font-size:10px;color:#C6B89E;font-style:italic;padding:2px 0">Nenhum item.</div>';
+    if(isM){
+      h+='<div style="display:flex;gap:4px;margin-top:6px">'
+        +'<input id="si-'+q.k+'" placeholder="Adicionar..." style="flex:1;background:white;border:1px solid #D8CDB8;border-radius:5px;padding:5px 7px;font-size:11px;color:#1A2838;outline:none"/>'
+        +'<button onclick="addSI(''+m.id+'',''+q.k+'')" style="background:'+q.c+';color:white;border:none;border-radius:5px;width:26px;height:26px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">+</button>'
+        +'</div>';
+    }
     h+='</div></div>';
   });
   h+='</div>';
   b.innerHTML=h;
+}
+
+async function addSI(mid,q){
+  var inp=document.getElementById('si-'+q);
+  var content=inp&&inp.value.trim();
+  if(!content)return;
+  try{
+    await sbFetch('POST','/rest/v1/swot_items',{mentee_id:mid,quadrant:q,content:content});
+    inp.value='';
+    toast('✓ Adicionado');
+    await loadData();
+    renderTab('swot',MENTEES.find(function(m){return m.id===mid;}),PROF&&PROF.role==='mentor');
+  }catch(e){toast('Erro: '+e.message);}
 }
 
 function rSess(m,b,isM){
